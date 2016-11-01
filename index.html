@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html ng-app="courseListApp">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<link rel="stylesheet" href="Libraries/bootstrap.min.css">
+	<link rel="stylesheet" href="Libraries/style.css">
+
+	<script src="Libraries/angular.min.js"></script>
+
+	<script>
+		
+		// модель
+		var model = {
+			user: "User1",
+			courses: [
+				{name: "HTML", passed: true},
+				{name: "JavaScript", passed: true},
+				{name: "Angular", passed: true},
+				{name: "React", passed: false}
+			]
+		};
+
+		// модуль
+		var courseListApp = angular.module("courseListApp", []);
+
+		// Конnтролер
+		courseListApp.controller("CourseListCtrl", function($scope){
+			$scope.data = model;
+
+			$scope.courseName = "";
+
+			// Обробний кнопки
+			$scope.addNewCourse = function(){
+				$scope.data.courses.push({
+					name: $scope.courseName,
+					passed: "no"
+				});
+			}
+
+			$scope.showText = function(passed){
+				return passed ? "Так" : "Ні";
+			}
+
+			$scope.setStyle = function(passed){
+				return passed ? "color:green" : "color:red";
+			}
+
+		});
+
+	</script>
+
+</head>
+<body ng-controller="CourseListCtrl">
+	<div class="container">
+		<div class="page-header">
+			<h1>Планування курсів</h1>
+			<h3>Користувач: {{data.user}}. Кількість курсів - {{data.courses.length}}</h3>
+		</div>
+		<div class="panel">
+			<div class="input-group">
+				<input class="form-control" ng-model="courseName">
+				<span class="input-group-btn">
+					<button class="btn btn-dafault" ng-click="addNewCourse()">Добавити</button>
+				</span>
+			</div>
+			  <table class="table table-striped">
+			    <thead>
+			      <tr>
+			        <th>Курс</th>
+			        <th></th>
+			        <th>Завершений</th>
+			   
+			      </tr>
+			    </thead>
+			    <tbody>
+				
+			      <tr ng-repeat="cours in data.courses"> <!-- ng-repeat - цикл; cours - в цю змінну записується кожен елемент масиву data.courses
+			       data.courses - це властивість  scoup  -->
+			        <td>{{cours.name}}</td>
+			        <td><input type="checkbox" ng-model="cours.passed" /></td>
+			        <td>
+			        	<span style="{{setStyle(cours.passed)}}">
+			        		{{showText(cours.passed)}}
+			        	</span>
+			        </td>
+			      
+			       
+			      </tr>
+			    </tbody>
+			  </table>
+		</div>
+	</div>
+
+
+
+</body>  
+</html>
